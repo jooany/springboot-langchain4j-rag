@@ -1,10 +1,12 @@
 package com.jooany.rag;
 
 import dev.langchain4j.data.document.Document;
+import dev.langchain4j.data.document.DocumentParser;
 import dev.langchain4j.data.document.DocumentSplitter;
 import dev.langchain4j.data.document.loader.FileSystemDocumentLoader;
 import dev.langchain4j.data.document.parser.apache.pdfbox.ApachePdfBoxDocumentParser;
 import dev.langchain4j.data.document.splitter.DocumentSplitters;
+import dev.langchain4j.data.embedding.Embedding;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.model.chat.ChatModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;
@@ -25,6 +27,7 @@ import org.springframework.core.io.ResourceLoader;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 @Configuration
 public class RAGConfig {
@@ -72,19 +75,12 @@ public class RAGConfig {
 
         EmbeddingStore<TextSegment> embeddingStore = new InMemoryEmbeddingStore<>();
         Resource resource = resourceLoader.getResource("classpath:정주연_이력서.pdf");
-        Path documentPath = Paths.get(resource.getURI());
+        DocumentParser parser = new ApachePdfBoxDocumentParser();
+        Document document = parser.parse(resource.getInputStream());
+        TextSegment wholeResumeSegment = document.toTextSegment();
+        Embedding embedding = embeddingModel.embed(wholeResumeSegment).content();
 
-        Document document = FileSystemDocumentLoader.loadDocument(documentPath, new ApachePdfBoxDocumentParser());
-
-        DocumentSplitter documentSplitter = DocumentSplitters.recursive(300, 0);
-
-        EmbeddingStoreIngestor ingestor = EmbeddingStoreIngestor.builder()
-            .documentSplitter(documentSplitter)
-            .embeddingModel(embeddingModel)
-            .embeddingStore(embeddingStore)
-            .build();
-
-        ingestor.ingest(document);
+        embeddingStore.add(embedding, wholeResumeSegment);
 
         return embeddingStore;
     }
