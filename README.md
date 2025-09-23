@@ -36,9 +36,6 @@ Spring Boot, LangChain4j, Google Gemini API를 사용하여, 개인 이력서(PD
 
 <img width="621" height="563" alt="image" src="https://github.com/user-attachments/assets/5f1bad8f-200e-4783-9ea4-5df84a37ff24" />
 
-
-`[실행 화면 예시 스크린샷]`
-
 ---
 
 ## 4. 실행 방법
