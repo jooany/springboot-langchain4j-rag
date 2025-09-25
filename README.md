@@ -42,7 +42,7 @@ Spring Boot, LangChain4j, Google Gemini API를 사용하여, 개인 이력서(PD
 
 1.  Google AI Studio에서 API 키를 발급받습니다.
 2.  프로젝트를 실행하는 머신에 `AI_API_KEY`라는 이름으로 **환경 변수**를 설정합니다.
-3.  `src/main/resources`에 질의응답의 기반이 될 PDF 파일을 (`.gitignore`에 추가한 파일명과 동일하게) 위치시킵니다. (*개인정보 문제로 이력서 파일은 첨부하지 않았습니다.)
+3.  `src/main/resources`에 질의응답의 기반이 될 PDF 파일을 위치시킵니다. (*개인정보 문제로 이력서 파일은 첨부하지 않았습니다.)
 4.  `./gradlew bootRun` 또는 IntelliJ에서 애플리케이션을 실행합니다.
 
 ---
